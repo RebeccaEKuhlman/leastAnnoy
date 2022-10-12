@@ -1,3 +1,5 @@
 # ninja log v5
-66	981	6872456257991749	build.ninja	59cb0b4433e59dea
-7	778	6872455247608793	CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj	b0b6c6ef065233ea
+66	981	6872467501990476	build.ninja	59cb0b4433e59dea
+6	1038	6872462431387735	CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj	cf60cfacb0a5988c
+5	1216	6872467536472993	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
+1217	1643	6872467540909462	leastAnnoy.exe	e66f7ef862d7d7fd

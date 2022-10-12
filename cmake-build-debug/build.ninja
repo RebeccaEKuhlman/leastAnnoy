@@ -52,6 +52,14 @@ build cmake_object_order_depends_target_leastAnnoy: phony || CMakeFiles/leastAnn
 build CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj: CXX_COMPILER__leastAnnoy_Debug C$:/Users/rekuh/IDE_ProgramFiles/Algorithms/leastAnnoy/hw2test.cpp || cmake_object_order_depends_target_leastAnnoy
   DEP_FILE = CMakeFiles\leastAnnoy.dir\hw2test.cpp.obj.d
   FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/rekuh/IDE_ProgramFiles/Algorithms/leastAnnoy/include
+  OBJECT_DIR = CMakeFiles\leastAnnoy.dir
+  OBJECT_FILE_DIR = CMakeFiles\leastAnnoy.dir
+
+build CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj: CXX_COMPILER__leastAnnoy_Debug C$:/Users/rekuh/IDE_ProgramFiles/Algorithms/leastAnnoy/MyGraph.cpp || cmake_object_order_depends_target_leastAnnoy
+  DEP_FILE = CMakeFiles\leastAnnoy.dir\MyGraph.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/rekuh/IDE_ProgramFiles/Algorithms/leastAnnoy/include
   OBJECT_DIR = CMakeFiles\leastAnnoy.dir
   OBJECT_FILE_DIR = CMakeFiles\leastAnnoy.dir
 
@@ -63,7 +71,7 @@ build CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj: CXX_COMPILER__leastAnnoy_Debug 
 #############################################
 # Link the executable leastAnnoy.exe
 
-build leastAnnoy.exe: CXX_EXECUTABLE_LINKER__leastAnnoy_Debug CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj
+build leastAnnoy.exe: CXX_EXECUTABLE_LINKER__leastAnnoy_Debug CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\leastAnnoy.dir

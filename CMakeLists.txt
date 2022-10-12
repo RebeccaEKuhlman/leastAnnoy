@@ -3,4 +3,9 @@ project(leastAnnoy)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(leastAnnoy hw2test.cpp)
+include_directories(include)
+
+set(SOURCES hw2test.cpp MyGraph.cpp)
+
+add_executable(leastAnnoy hw2test.cpp MyGraph.h MyGraph.cpp)
+
