@@ -28,19 +28,21 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <stack>
+using namespace std;
 
 #ifndef LEASTANNOY_MYGRAPH_H
 #define LEASTANNOY_MYGRAPH_H
 
 class MyGraph{
-    int adjMatrix[0][0];
-    int vertexes = 0;
+
+    int vertexes;
+    float** adjMatrix;
     public:
         MyGraph(int);
         MyGraph(const MyGraph&);
         bool AddEdge(int, int, float);
         void Output(std::ostream& os);
-        const int size();
         std::pair<std::vector<int>, float> HW2Prog(int, int);
 
 

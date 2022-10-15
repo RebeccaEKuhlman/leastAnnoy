@@ -7,9 +7,9 @@ using namespace std;
 
 int main()
 {
-    ifstream ifile("input.txt");
+    ifstream ifile("c:/Users/rekuh/IDE_ProgramFiles/Algorithms/leastAnnoy/input.txt");
+    cout << ifile.is_open() << endl;
     int n, e, c;
-
     ifile >> n >> e >> c;
     MyGraph g(n);
 

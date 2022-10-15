@@ -29,12 +29,19 @@
 
     //Create a graph with n vertices.
     MyGraph::MyGraph(int n){
-        MyGraph::adjMatrix [n][n] = {};
         MyGraph::vertexes = n;
+
+        // Create a dynamic array of pointers
+        adjMatrix = new float*[vertexes];
+
+        // Create a row for every pointer
+        for (int i = 0; i < vertexes; i++) {
+            adjMatrix[i] = new float[vertexes];
+        }
     }
     MyGraph::MyGraph(const MyGraph& oldMatrix){
         MyGraph::vertexes = oldMatrix.MyGraph::vertexes;
-        int newMatrix [MyGraph::vertexes][MyGraph::vertexes];
+        float newMatrix [MyGraph::vertexes][MyGraph::vertexes];
         for(int row = 0; row < MyGraph::vertexes; row++){
             for(int col = 0; col < MyGraph::vertexes; col++){
                 newMatrix[row][col] = oldMatrix.adjMatrix[row][col];
@@ -44,7 +51,7 @@
     bool MyGraph::AddEdge(int a, int b, float weight){
         if(a > MyGraph::vertexes || b > MyGraph::vertexes || weight < 0)
             return false;
-        if(MyGraph::adjMatrix[a][b] != 0)
+        if((MyGraph::adjMatrix[a][b]) != 0)
             return false;
         MyGraph::adjMatrix[a][b] = weight;
         return true;
@@ -58,10 +65,6 @@
         }
 
     }
-    const int MyGraph::size(){
-        return vertexes;
-    }
-
     std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
         std::vector<int> candidate;
         candidate.push_back(s);
