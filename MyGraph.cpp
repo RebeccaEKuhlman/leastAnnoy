@@ -66,21 +66,22 @@
 
 void MyGraph::dfs(int start, vector<bool>& visited, const int t, float canCount, vector<int> temp)
 {
-    visited[start] = true;
+    temp.push_back(start);
     if(start == t){
-        if((canMax > canCount || canMax == -1) && canCount != -1){
+        if(canMax > canCount || canMax == -1){
             canMax = canCount;
             candidate = temp;
         }
-        return;
     }
-    for (int i = 0; i < vertexes; i++) {
-        float num = adjMatrix[start][i];
-        if (num != 0 && (!visited[i])) {
-            temp.push_back(start);
-            if(num > canCount)
-                dfs(i, visited, t, num, temp);
-            dfs(i, visited, t, canCount, temp);
+    else{
+        visited[start] = true;
+        for (int i = 0; i < vertexes; i++) {
+            float num = adjMatrix[start][i];
+            if (num != 0 && (!visited[i])) {
+                if(num > canCount)
+                    dfs(i, visited, t, num, temp);
+                dfs(i, visited, t, canCount, temp);
+            }
         }
     }
 }
