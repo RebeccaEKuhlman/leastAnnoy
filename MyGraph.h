@@ -44,7 +44,7 @@ class MyGraph{
         bool AddEdge(int, int, float);
         void Output(std::ostream& os);
         std::pair<std::vector<int>, float> HW2Prog(int, int);
-        void dfs(int start, vector<bool>& visited,const int t, float canCount, vector<int> temp);
+        void dfs(int start, vector<bool> visited,const int t, float canCount, vector<int> temp);
     private:
         vector<int> candidate;
         float canMax = -1;

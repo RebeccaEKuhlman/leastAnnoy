@@ -52,6 +52,7 @@
         if(adjMatrix[a][b] != 0)
             return false;
         adjMatrix[a][b] = weight;
+        adjMatrix[b][a] = weight;
         return true;
     }
     void MyGraph::Output(std::ostream& os){
@@ -64,7 +65,7 @@
 
     }
 
-void MyGraph::dfs(int start, vector<bool>& visited, const int t, float canCount, vector<int> temp)
+void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, vector<int> temp)
 {
     temp.push_back(start);
     if(start == t){
@@ -80,7 +81,8 @@ void MyGraph::dfs(int start, vector<bool>& visited, const int t, float canCount,
             if (num != 0 && (!visited[i])) {
                 if(num > canCount)
                     dfs(i, visited, t, num, temp);
-                dfs(i, visited, t, canCount, temp);
+                else
+                    dfs(i, visited, t, canCount, temp);
             }
         }
     }
