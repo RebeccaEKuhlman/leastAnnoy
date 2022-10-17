@@ -30,13 +30,11 @@
     //Create a graph with n vertices.
     MyGraph::MyGraph(int n){
         MyGraph::vertexes = n;
-
-        // Create a dynamic array of pointers
-        adjMatrix = new float*[vertexes];
-
-        // Create a row for every pointer
+        adjMatrix.resize(n);
         for (int i = 0; i < vertexes; i++) {
-            adjMatrix[i] = new float[vertexes];
+            adjMatrix[i].resize(n);
+            for(int j = 0; j < vertexes; j++)
+                adjMatrix[i][j] = 0;
         }
     }
     MyGraph::MyGraph(const MyGraph& oldMatrix){
@@ -51,50 +49,51 @@
     bool MyGraph::AddEdge(int a, int b, float weight){
         if(a > MyGraph::vertexes || b > MyGraph::vertexes || weight < 0)
             return false;
-        if((MyGraph::adjMatrix[a][b]) != 0)
+        if(adjMatrix[a][b] != 0)
             return false;
-        MyGraph::adjMatrix[a][b] = weight;
+        adjMatrix[a][b] = weight;
         return true;
     }
     void MyGraph::Output(std::ostream& os){
         os << "Vertexes: " << MyGraph::vertexes << std::endl;
         for(int row = 0; row < MyGraph::vertexes; row++){
             for(int col = 0; col < MyGraph::vertexes; col++){
-                os << row << "-" << MyGraph::adjMatrix[row][col] << "-" << col << std::endl;
+                os << row << "-" << adjMatrix[row][col] << "-" << col << std::endl;
             }
         }
 
     }
+
+void MyGraph::dfs(int start, vector<bool>& visited, const int t, float canCount, vector<int> temp)
+{
+    visited[start] = true;
+    if(start == t){
+        if((canMax > canCount || canMax == -1) && canCount != -1){
+            canMax = canCount;
+            candidate = temp;
+        }
+        return;
+    }
+    for (int i = 0; i < vertexes; i++) {
+        float num = adjMatrix[start][i];
+        if (num != 0 && (!visited[i])) {
+            temp.push_back(start);
+            if(num > canCount)
+                dfs(i, visited, t, num, temp);
+            dfs(i, visited, t, canCount, temp);
+        }
+    }
+}
+
     std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
-        std::vector<int> candidate;
-        candidate.push_back(s);
-        float canMax = -1;
-        int visited[vertexes];
-        visited[s] = true;
-        int vertex = s;
-        std::vector<int> temp;
-        int canCount = -1;
-        do{
-            for(int index = 0; index < vertexes; index++) {
-                if (index != vertex && !visited[index] && adjMatrix[vertex][index] != 0) {
-                    temp.push_back(index);
-                    int edgeNum = adjMatrix[vertex][index];
-                    if (canMax > edgeNum || canCount == -1)
-                        canCount = edgeNum;
-                    visited[index] = true;
-                    if(index == t) {
-                        if(canMax > canCount || canMax == -1){
-                            canMax = canCount;
-                            candidate = std::vector<int>(temp);
-                        }
-                        //Might need some editing
-                        temp.pop_back();
-                    }
-                    else //Might need some editing
-                        vertex = index;
-                        break;
-                }
-            }
-        }while(vertex != s);
-        return std::pair<std::vector<int>, float>(candidate, canMax);
+        vector<bool> visited(vertexes);
+        canMax = -1;
+        candidate.empty();
+        for(int i = 0; i < vertexes; i++){
+            visited[i] = false;
+        }
+        vector<int> temp;
+        dfs(s, visited, t, -1, (temp));
+        float weightRecord = canMax;
+        return std::pair<std::vector<int>, float>(candidate, weightRecord);
     }
