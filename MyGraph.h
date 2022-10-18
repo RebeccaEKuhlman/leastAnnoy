@@ -44,13 +44,20 @@ class MyGraph{
         bool AddEdge(int, int, float);
         void Output(std::ostream& os);
         std::pair<std::vector<int>, float> HW2Prog(int, int);
+        std::pair<std::vector<int>, float> HW2ProgV1(int, int);
         void dfs(int start, vector<bool> visited,const int t, float canCount, vector<int> temp);
+
     private:
         vector<int> candidate;
         float canMax = -1;
         bool mstRan = false;
         vector<vector<float>> mst;
         int mstEdges;
+        void kruskals(int start, vector<bool>& visited);
+        void getMST();
+        bool pathFound;
+        vector<int> pathFind(int start, int t, vector<int> path);
+        float maxEdge;
 
 };
 

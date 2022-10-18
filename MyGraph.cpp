@@ -89,7 +89,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     }
 }
 
-    std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
+    std::pair<std::vector<int>, float> MyGraph::HW2ProgV1(int s, int t){
         vector<bool> visited(vertexes);
         canMax = -1;
         candidate.empty();
@@ -102,10 +102,22 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         return std::pair<std::vector<int>, float>(candidate, weightRecord);
     }
 
+    std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
+        if(!pathFound)
+            getMST();
+        pathFound = false;
+        maxEdge = -1;
+        vector<int> p;
+        return std::pair<std::vector<int>, float>(pathFind(s, t, p), maxEdge);
+    }
+
+
     void MyGraph::getMST(){
         vector<bool> visited(vertexes);
+        mst.resize(vertexes);
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
+            mst[i].resize(vertexes);
         }
         mstEdges = 0;
         kruskals(0, visited);
@@ -130,4 +142,24 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
             mst[start][minEdgeVertex] = minEdge;
             mstEdges++;
         }
+    }
+
+    vector<int> MyGraph::pathFind(int start, int t, vector<int> path){
+        path.push_back(start);
+        if(start == t){
+            pathFound = true;
+            return path;
+        }
+        vector<int> newpath;
+        for(int i = 0; i < vertexes; i++){
+            if(pathFound){
+                if(maxEdge < mst[start][i])
+                    maxEdge = mst[start][i];
+                return newpath;
+            }
+            if(mst[start][i] != 0){
+                 newpath = pathFind(i, t, path);
+            }
+        }
+
     }
