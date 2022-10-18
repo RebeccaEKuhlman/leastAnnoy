@@ -48,6 +48,9 @@ class MyGraph{
     private:
         vector<int> candidate;
         float canMax = -1;
+        bool mstRan = false;
+        vector<vector<float>> mst;
+        int mstEdges;
 
 };
 

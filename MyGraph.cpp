@@ -53,6 +53,7 @@
             return false;
         adjMatrix[a][b] = weight;
         adjMatrix[b][a] = weight;
+        mstRan = false;
         return true;
     }
     void MyGraph::Output(std::ostream& os){
@@ -99,4 +100,34 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         dfs(s, visited, t, -1, (temp));
         float weightRecord = canMax;
         return std::pair<std::vector<int>, float>(candidate, weightRecord);
+    }
+
+    void MyGraph::getMST(){
+        vector<bool> visited(vertexes);
+        for(int i = 0; i < vertexes; i++){
+            visited[i] = false;
+        }
+        mstEdges = 0;
+        kruskals(0, visited);
+        mstRan = true;
+    }
+
+    void MyGraph::kruskals(int start, vector<bool>& visited){
+        if(mstEdges == vertexes - 1)
+            return;
+        visited[start] = true;
+        float minEdge = -1;
+        int minEdgeVertex = -1;
+        for (int i = 0; i < vertexes; i++) {
+            if(!visited[i] && (minEdge == -1 || (adjMatrix[start][i] < minEdge && adjMatrix[start][i] != 0))){
+                minEdge =  adjMatrix[start][i];
+                minEdgeVertex = i;
+            }
+        }
+        if(minEdge > 0){
+            kruskals(minEdgeVertex, visited);
+            mst[start][minEdgeVertex] = minEdge;
+            mst[start][minEdgeVertex] = minEdge;
+            mstEdges++;
+        }
     }
