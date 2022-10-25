@@ -53,6 +53,7 @@
             return false;
         adjMatrix[a][b] = weight;
         adjMatrix[b][a] = weight;
+        edgeList.push_back(pair<float, pair<int, int>>(weight, pair<int, int>(a, b)));
         mstRan = false;
         return true;
     }
@@ -120,6 +121,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
             mst[i].resize(vertexes);
         }
         mstEdges = 0;
+        Quicksort.(edgeList, 0, edgeList.size() - 1);
         kruskals(0, visited);
         mstRan = true;
     }
@@ -137,10 +139,10 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
             }
         }
         if(minEdge > 0){
-            kruskals(minEdgeVertex, visited);
             mst[start][minEdgeVertex] = minEdge;
-            mst[start][minEdgeVertex] = minEdge;
+            mst[minEdgeVertex][start] = minEdge;
             mstEdges++;
+            kruskals(minEdgeVertex, visited);
         }
     }
 
@@ -163,3 +165,30 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         }
 
     }
+
+
+int MyGraph::Partition(vector<pair<float, pair<int, int>>> &v, int start, int end){
+
+    int pivot = end;
+    int j = start;
+    for(int i=start;i<end;++i){
+        if(v[i].first < v[pivot].first){
+            swap(v[i],v[j]);
+            ++j;
+        }
+    }
+    swap(v[j],v[pivot]);
+    return j;
+
+}
+
+void MyGraph::quicksort(vector<pair<float, pair<int, int>>> &v, int start, int end){
+
+    if(start<end){
+        int p = Partition(v,start,end);
+        quicksort(v,start,p-1);
+        quicksort(v,p+1,end);
+    }
+
+}
+

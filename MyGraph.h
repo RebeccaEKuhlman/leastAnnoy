@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <stack>
+#include <algorithm>
 using namespace std;
 
 #ifndef LEASTANNOY_MYGRAPH_H
@@ -51,14 +52,16 @@ class MyGraph{
         vector<int> candidate;
         float canMax = -1;
         bool mstRan = false;
-        vector<vector<float>> mst;
+        vector<pair<float, pair<int, int>>> edgeList;
+        vector<vector<int>> mst;
         int mstEdges;
         void kruskals(int start, vector<bool>& visited);
         void getMST();
         bool pathFound;
         vector<int> pathFind(int start, int t, vector<int> path);
         float maxEdge;
-
+        int Partition(vector<pair<float, pair<int, int>>> &v, int start, int end);
+        void quicksort(vector<pair<float, pair<int, int>>> &v, int start, int end);
 };
 
 #endif //LEASTANNOY_MYGRAPH_H
