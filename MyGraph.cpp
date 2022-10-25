@@ -121,29 +121,29 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
             mst[i].resize(vertexes);
         }
         mstEdges = 0;
-        Quicksort.(edgeList, 0, edgeList.size() - 1);
-        kruskals(0, visited);
-        mstRan = true;
-    }
-
-    void MyGraph::kruskals(int start, vector<bool>& visited){
-        if(mstEdges == vertexes - 1)
-            return;
-        visited[start] = true;
-        float minEdge = -1;
-        int minEdgeVertex = -1;
-        for (int i = 0; i < vertexes; i++) {
-            if(!visited[i] && (minEdge == -1 || (adjMatrix[start][i] < minEdge && adjMatrix[start][i] != 0))){
-                minEdge =  adjMatrix[start][i];
-                minEdgeVertex = i;
+        quicksort(edgeList, 0, edgeList.size() - 1);
+        mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
+        mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
+        visited[edgeList[0].second.first] = true;
+        visited[edgeList[0].second.second] = true;
+        for(int index = 1; mstEdges != vertexes - 1 && index < edgeList.size(); index++){
+            int a = edgeList[0].second.first;
+            int b = edgeList[0].second.second;
+            if(!visited[a]){
+                mst[a][b] = edgeList[0].first;
+                mst[b][a] = edgeList[0].first;
+                visited[a] = true;
+                visited[b] = true;
+                mstEdges++;
+            }
+            else if(!visited[b]){
+                mst[a][b] = edgeList[0].first;
+                mst[b][a] = edgeList[0].first;
+                visited[b] = true;
+                mstEdges++;
             }
         }
-        if(minEdge > 0){
-            mst[start][minEdgeVertex] = minEdge;
-            mst[minEdgeVertex][start] = minEdge;
-            mstEdges++;
-            kruskals(minEdgeVertex, visited);
-        }
+        mstRan = true;
     }
 
     vector<int> MyGraph::pathFind(int start, int t, vector<int> path){
