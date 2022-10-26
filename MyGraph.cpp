@@ -120,44 +120,54 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
 
 
     void MyGraph::getMST(){
-        vector<int>edgeOrder(vertexes);
         vector<bool> visited(vertexes);
         mst.resize(vertexes);
-        vector<float> key(vertexes);
+        vector<int> key(vertexes);
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
             key[i] = INT_MAX;
             mst[i].resize(vertexes);
         }
         key[0] = 0;
-        edgeOrder[0] = -1;
-        for(int index = 0; index < vertexes - 1; index++){
-            int minyEdge = minEdge(key, visited);
-            visited[minyEdge] = true;
-            for(int j = 0; j < vertexes; j++){
-                if(adjMatrix[minyEdge][j] != 0 && !visited[j] && adjMatrix[minyEdge][j] < key[j])
-                    edgeOrder[j] = minyEdge;
-                    key[j] = adjMatrix[minyEdge][j];
+        mstEdges = 1;
+        quicksort(edgeList, 0, edgeList.size() - 1);
+        mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
+        mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
+        visited[edgeList[0].second.first] = true;
+        visited[edgeList[0].second.second] = true;
+        for(int index = 1; index < edgeList.size(); index++){ //mstEdges != (vertexes - 1) &&
+            int a = edgeList[index].second.first;
+            int b = edgeList[index].second.second;
+            if(!visited[a]){
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
+                visited[a] = true;
+                visited[b] = true;
+                mstEdges++;
+            }
+            else if(!visited[b]){
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
+                visited[b] = true;
+                mstEdges++;
+            }
+            else{
+                bool ifNotCycle = findEndpoint(a, b, a);
+                if(ifNotCycle){
+                    mst[a][b] = edgeList[index].first;
+                    mst[b][a] = edgeList[index].first;
+                    mstEdges++;
+                }
             }
         }
+
+
+
+
+
+
         mstRan = true;
-        for (int a = 1; a < vertexes; a++){
-            int b = edgeOrder[a];
-            float weight = adjMatrix[a][b];
-            mst[b][a] = weight;
-            mst[a][b] = weight;
-        }
     }
-
-    int MyGraph::minEdge(vector<float> key, vector<bool> visited)
-    {
-        int min = INT_MAX, min_index;
-        for (int index = 0; index < vertexes; index++)
-            if (!visited[index] && key[index] < min)
-                min = key[index], min_index = index;
-        return min_index;
-    }
-
 
     bool MyGraph::findEndpoint(int a, int b, int num){
         if(num == b)
