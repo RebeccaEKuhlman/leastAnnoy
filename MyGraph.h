@@ -57,9 +57,13 @@ class MyGraph{
         int mstEdges = 0;
         void getMST();
         bool pathFound = false;
+<<<<<<< HEAD
         void pathFind(int start, int t, vector<bool>);
         vector<int> path;
         int minEdge(vector<float> key, vector<bool> visited);
+=======
+        vector<int> pathFind(int start, int t, vector<int> path, vector<bool>);
+>>>>>>> parent of e887614 (Before prim switch)
         float maxEdge = -1;
         int Partition(vector<pair<float, pair<int, int>>> &v, int start, int end);
         void quicksort(vector<pair<float, pair<int, int>>> &v, int start, int end);

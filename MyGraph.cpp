@@ -106,9 +106,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
         if(!pathFound)
             getMST();
-
         pathFound = false;
-        path.clear();
         vector<bool> visited(vertexes);
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
@@ -123,12 +121,15 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         vector<int>edgeOrder(vertexes);
         vector<bool> visited(vertexes);
         mst.resize(vertexes);
+<<<<<<< HEAD
         vector<float> key(vertexes);
+=======
+>>>>>>> parent of e887614 (Before prim switch)
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
-            key[i] = INT_MAX;
             mst[i].resize(vertexes);
         }
+<<<<<<< HEAD
         key[0] = 0;
         edgeOrder[0] = -1;
         for(int index = 0; index < vertexes - 1; index++){
@@ -138,6 +139,29 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
                 if(adjMatrix[minyEdge][j] != 0 && !visited[j] && adjMatrix[minyEdge][j] < key[j])
                     edgeOrder[j] = minyEdge;
                     key[j] = adjMatrix[minyEdge][j];
+=======
+        mstEdges = 0;
+        quicksort(edgeList, 0, edgeList.size() - 1);
+        mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
+        mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
+        visited[edgeList[0].second.first] = true;
+        visited[edgeList[0].second.second] = true;
+        for(int index = 1; mstEdges != (vertexes - 1) && index < edgeList.size(); index++){
+            int a = edgeList[index].second.first;
+            int b = edgeList[index].second.second;
+            if(!visited[a]){
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
+                visited[a] = true;
+                visited[b] = true;
+                mstEdges++;
+            }
+            else if(!visited[b]){
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
+                visited[b] = true;
+                mstEdges++;
+>>>>>>> parent of e887614 (Before prim switch)
             }
         }
         mstRan = true;
@@ -149,6 +173,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         }
     }
 
+<<<<<<< HEAD
     int MyGraph::minEdge(vector<float> key, vector<bool> visited)
     {
         int min = INT_MAX, min_index;
@@ -177,25 +202,31 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     }
 
     void MyGraph::pathFind(int start, int t, vector<bool> visited){
+=======
+    vector<int> MyGraph::pathFind(int start, int t, vector<int> path, vector<bool> visited){
+>>>>>>> parent of e887614 (Before prim switch)
         path.push_back(start);
         if(start == t){
             pathFound = true;
-            return;
+            vector<int> returner;
+            for(int index = 0; index < path.size(); index++){
+                returner.push_back(path[index]);
+            }
+            return returner;
         }
+        vector<int> newpath;
         visited[start] = true;
         for(int i = 0; i < vertexes; i++){
             if(pathFound){
                 if(maxEdge < mst[start][i])
                     maxEdge = mst[start][i];
-                return;
+                return newpath;
             }
             if(!visited[i] && mst[start][i] != 0){
-                pathFind(i, t, visited);
+                 newpath = pathFind(i, t, path, visited);
             }
         }
-        if(!pathFound){
-            path.pop_back();
-        }
+        return newpath;
     }
 
 
