@@ -106,31 +106,36 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
         if(!pathFound)
             getMST();
+
         pathFound = false;
+        path.clear();
         vector<bool> visited(vertexes);
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
         }
         maxEdge = -1;
-        vector<int> p;
-        return std::pair<std::vector<int>, float>(pathFind(s, t, p, visited), maxEdge);
+        pathFind(s, t, visited);
+        return std::pair<std::vector<int>, float>(path, maxEdge);
     }
 
 
     void MyGraph::getMST(){
         vector<bool> visited(vertexes);
         mst.resize(vertexes);
+        vector<int> key(vertexes);
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
+            key[i] = INT_MAX;
             mst[i].resize(vertexes);
         }
-        mstEdges = 0;
+        key[0] = 0;
+        mstEdges = 1;
         quicksort(edgeList, 0, edgeList.size() - 1);
         mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
         mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
         visited[edgeList[0].second.first] = true;
         visited[edgeList[0].second.second] = true;
-        for(int index = 1; mstEdges != (vertexes - 1) && index < edgeList.size(); index++){
+        for(int index = 1; index < edgeList.size(); index++){ //mstEdges != (vertexes - 1) &&
             int a = edgeList[index].second.first;
             int b = edgeList[index].second.second;
             if(!visited[a]){
@@ -146,33 +151,61 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
                 visited[b] = true;
                 mstEdges++;
             }
+            else{
+                bool ifNotCycle = findEndpoint(a, b, a);
+                if(ifNotCycle){
+                    mst[a][b] = edgeList[index].first;
+                    mst[b][a] = edgeList[index].first;
+                    mstEdges++;
+                }
+            }
         }
+
+
+
+
+
+
         mstRan = true;
     }
 
-    vector<int> MyGraph::pathFind(int start, int t, vector<int> path, vector<bool> visited){
+    bool MyGraph::findEndpoint(int a, int b, int num){
+        if(num == b)
+            return false;
+        else if(num == a)
+            return true;
+        for(int i; i < vertexes; i++){
+            float check = mst[num][i];
+            bool ifComplete = false;
+            if(check != 0 && i != b){
+                ifComplete = findEndpoint(a, b, i);
+            }
+            if(ifComplete)
+                return true;
+        }
+        return true;
+    }
+
+    void MyGraph::pathFind(int start, int t, vector<bool> visited){
         path.push_back(start);
         if(start == t){
             pathFound = true;
-            vector<int> returner;
-            for(int index = 0; index < path.size(); index++){
-                returner.push_back(path[index]);
-            }
-            return returner;
+            return;
         }
-        vector<int> newpath;
         visited[start] = true;
         for(int i = 0; i < vertexes; i++){
             if(pathFound){
                 if(maxEdge < mst[start][i])
                     maxEdge = mst[start][i];
-                return newpath;
+                return;
             }
             if(!visited[i] && mst[start][i] != 0){
-                 newpath = pathFind(i, t, path, visited);
+                pathFind(i, t, visited);
             }
         }
-        return newpath;
+        if(!pathFound){
+            path.pop_back();
+        }
     }
 
 

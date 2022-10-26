@@ -57,10 +57,12 @@ class MyGraph{
         int mstEdges = 0;
         void getMST();
         bool pathFound = false;
-        vector<int> pathFind(int start, int t, vector<int> path, vector<bool>);
+        void pathFind(int start, int t, vector<bool>);
+        vector<int> path;
         float maxEdge = -1;
         int Partition(vector<pair<float, pair<int, int>>> &v, int start, int end);
         void quicksort(vector<pair<float, pair<int, int>>> &v, int start, int end);
+        bool findEndpoint(int a, int b, int num);
 };
 
 #endif //LEASTANNOY_MYGRAPH_H
