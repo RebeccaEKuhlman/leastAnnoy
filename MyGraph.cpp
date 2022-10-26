@@ -112,99 +112,72 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
             visited[i] = false;
         }
         maxEdge = -1;
-        pathFind(s, t, visited);
-        return std::pair<std::vector<int>, float>(path, maxEdge);
+        vector<int> p;
+        return std::pair<std::vector<int>, float>(pathFind(s, t, p, visited), maxEdge);
     }
 
 
     void MyGraph::getMST(){
-        vector<int>edgeOrder(vertexes);
+        mst.clear();
         vector<bool> visited(vertexes);
+        sets.resize(vertexes);
         mst.resize(vertexes);
-<<<<<<< HEAD
-        vector<float> key(vertexes);
-=======
->>>>>>> parent of e887614 (Before prim switch)
+        vector<int> setKey;
         for(int i = 0; i < vertexes; i++){
             visited[i] = false;
             mst[i].resize(vertexes);
+            sets[i].push_back(i);
+            setKey.push_back(i);
         }
-<<<<<<< HEAD
-        key[0] = 0;
-        edgeOrder[0] = -1;
-        for(int index = 0; index < vertexes - 1; index++){
-            int minyEdge = minEdge(key, visited);
-            visited[minyEdge] = true;
-            for(int j = 0; j < vertexes; j++){
-                if(adjMatrix[minyEdge][j] != 0 && !visited[j] && adjMatrix[minyEdge][j] < key[j])
-                    edgeOrder[j] = minyEdge;
-                    key[j] = adjMatrix[minyEdge][j];
-=======
-        mstEdges = 0;
         quicksort(edgeList, 0, edgeList.size() - 1);
         mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
         mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
         visited[edgeList[0].second.first] = true;
         visited[edgeList[0].second.second] = true;
-        for(int index = 1; mstEdges != (vertexes - 1) && index < edgeList.size(); index++){
+        sets[1].pop_back();
+        sets[0].push_back(edgeList[0].second.second);
+        for(int index = 1; index < edgeList.size(); index++){
             int a = edgeList[index].second.first;
             int b = edgeList[index].second.second;
-            if(!visited[a]){
+            if(!visited[a] || !visited[b]){
                 mst[a][b] = edgeList[index].first;
                 mst[b][a] = edgeList[index].first;
                 visited[a] = true;
                 visited[b] = true;
+                int indA = setKey[a];
+                int indB = setKey[b];
+                if(sets[indA].size() >= sets[indB].size()){
+                    mergeVectors(indA, indB, b, setKey);
+                }
+                else
+                    mergeVectors(indB, indA, a, setKey);
                 mstEdges++;
             }
-            else if(!visited[b]){
+            else if(setKey[a] != setKey[b]){
+                int indA = setKey[a];
+                int indB = setKey[b];
+                if(sets[indA].size() >= sets[indB].size()){
+                    mergeVectors(indA, indB, b, setKey);
+                }
+                else
+                    mergeVectors(indB, indA, a, setKey);
                 mst[a][b] = edgeList[index].first;
                 mst[b][a] = edgeList[index].first;
-                visited[b] = true;
                 mstEdges++;
->>>>>>> parent of e887614 (Before prim switch)
             }
         }
         mstRan = true;
-        for (int a = 1; a < vertexes; a++){
-            int b = edgeOrder[a];
-            float weight = adjMatrix[a][b];
-            mst[b][a] = weight;
-            mst[a][b] = weight;
+    }
+
+    void MyGraph::mergeVectors(int indA, int indB, int b, vector<int>& setKey){
+        for(int index = sets[indB].size() - 1; index >= 0; index--){
+            sets[indA].push_back(sets[indB][index]);
+            setKey[sets[indB][index]] = indA;
+            sets[indB].pop_back();
         }
     }
 
-<<<<<<< HEAD
-    int MyGraph::minEdge(vector<float> key, vector<bool> visited)
-    {
-        int min = INT_MAX, min_index;
-        for (int index = 0; index < vertexes; index++)
-            if (!visited[index] && key[index] < min)
-                min = key[index], min_index = index;
-        return min_index;
-    }
-
-
-    bool MyGraph::findEndpoint(int a, int b, int num){
-        if(num == b)
-            return false;
-        else if(num == a)
-            return true;
-        for(int i; i < vertexes; i++){
-            float check = mst[num][i];
-            bool ifComplete = false;
-            if(check != 0 && i != b){
-                ifComplete = findEndpoint(a, b, i);
-            }
-            if(ifComplete)
-                return true;
-        }
-        return true;
-    }
-
-    void MyGraph::pathFind(int start, int t, vector<bool> visited){
-=======
     vector<int> MyGraph::pathFind(int start, int t, vector<int> path, vector<bool> visited){
->>>>>>> parent of e887614 (Before prim switch)
         path.push_back(start);
         if(start == t){
             pathFound = true;

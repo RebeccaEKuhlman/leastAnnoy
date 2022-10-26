@@ -9,6 +9,7 @@
 4078	5067	6884498931340760	leastAnnoy.exe	e66f7ef862d7d7fd
 5	5817	6884499584023719	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
 5819	6211	6884499587990362	leastAnnoy.exe	e66f7ef862d7d7fd
+<<<<<<< HEAD
 5	1107	6884956832634252	CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj	cf60cfacb0a5988c
 6	1076	6884957565713917	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
 1077	1353	6884957568444943	leastAnnoy.exe	e66f7ef862d7d7fd
@@ -36,3 +37,12 @@
 5344	5655	6885184066540869	leastAnnoy.exe	e66f7ef862d7d7fd
 5	5327	6885186673204846	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
 5328	5640	6885186676328639	leastAnnoy.exe	e66f7ef862d7d7fd
+=======
+>>>>>>> parent of e887614 (Before prim switch)
+2	4165	6885243591838065	CMakeFiles/leastAnnoy.dir/hw2test.cpp.obj	cf60cfacb0a5988c
+37	5243	6885243602887599	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
+5243	6177	6885243611957240	leastAnnoy.exe	e66f7ef862d7d7fd
+8	1257	6885250204119456	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
+1258	1534	6885250206853814	leastAnnoy.exe	e66f7ef862d7d7fd
+4	1232	6885251384952816	CMakeFiles/leastAnnoy.dir/MyGraph.cpp.obj	953c23aeb0d4daf
+1233	1506	6885251387654792	leastAnnoy.exe	e66f7ef862d7d7fd
