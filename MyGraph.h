@@ -55,10 +55,9 @@ class MyGraph{
         vector<pair<float, pair<int, int>>> edgeList;
         vector<vector<float>> mst;
         int mstEdges = 0;
-        void kruskals(int start, vector<bool>& visited);
         void getMST();
         bool pathFound = false;
-        vector<int> pathFind(int start, int t, vector<int> path);
+        vector<int> pathFind(int start, int t, vector<int> path, vector<bool>);
         float maxEdge = -1;
         int Partition(vector<pair<float, pair<int, int>>> &v, int start, int end);
         void quicksort(vector<pair<float, pair<int, int>>> &v, int start, int end);

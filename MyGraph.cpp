@@ -107,9 +107,13 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         if(!pathFound)
             getMST();
         pathFound = false;
+        vector<bool> visited(vertexes);
+        for(int i = 0; i < vertexes; i++){
+            visited[i] = false;
+        }
         maxEdge = -1;
         vector<int> p;
-        return std::pair<std::vector<int>, float>(pathFind(s, t, p), maxEdge);
+        return std::pair<std::vector<int>, float>(pathFind(s, t, p, visited), maxEdge);
     }
 
 
@@ -126,19 +130,19 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
         visited[edgeList[0].second.first] = true;
         visited[edgeList[0].second.second] = true;
-        for(int index = 1; mstEdges != vertexes - 1 && index < edgeList.size(); index++){
-            int a = edgeList[0].second.first;
-            int b = edgeList[0].second.second;
+        for(int index = 1; mstEdges != (vertexes - 1) && index < edgeList.size(); index++){
+            int a = edgeList[index].second.first;
+            int b = edgeList[index].second.second;
             if(!visited[a]){
-                mst[a][b] = edgeList[0].first;
-                mst[b][a] = edgeList[0].first;
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
                 visited[a] = true;
                 visited[b] = true;
                 mstEdges++;
             }
             else if(!visited[b]){
-                mst[a][b] = edgeList[0].first;
-                mst[b][a] = edgeList[0].first;
+                mst[a][b] = edgeList[index].first;
+                mst[b][a] = edgeList[index].first;
                 visited[b] = true;
                 mstEdges++;
             }
@@ -146,24 +150,29 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         mstRan = true;
     }
 
-    vector<int> MyGraph::pathFind(int start, int t, vector<int> path){
+    vector<int> MyGraph::pathFind(int start, int t, vector<int> path, vector<bool> visited){
         path.push_back(start);
         if(start == t){
             pathFound = true;
-            return path;
+            vector<int> returner;
+            for(int index = 0; index < path.size(); index++){
+                returner.push_back(path[index]);
+            }
+            return returner;
         }
         vector<int> newpath;
+        visited[start] = true;
         for(int i = 0; i < vertexes; i++){
             if(pathFound){
                 if(maxEdge < mst[start][i])
                     maxEdge = mst[start][i];
                 return newpath;
             }
-            if(mst[start][i] != 0){
-                 newpath = pathFind(i, t, path);
+            if(!visited[i] && mst[start][i] != 0){
+                 newpath = pathFind(i, t, path, visited);
             }
         }
-
+        return newpath;
     }
 
 
