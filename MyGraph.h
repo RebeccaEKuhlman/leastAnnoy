@@ -37,8 +37,6 @@ using namespace std;
 
 class MyGraph{
 
-    int vertexes;
-    vector<vector<float>> adjMatrix;
     public:
         MyGraph(int);
         MyGraph(const MyGraph&);
@@ -53,7 +51,8 @@ class MyGraph{
         vector<int> candidate;
         float canMax = -1;
 
-
+        int vertexes;
+        vector<vector<float>> adjMatrix;
         bool mstRan = false;
         vector<pair<float, pair<int, int>>> edgeList;
         vector<vector<float>> mst;

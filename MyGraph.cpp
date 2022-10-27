@@ -31,10 +31,9 @@
     MyGraph::MyGraph(int n){
         MyGraph::vertexes = n + 1;
         adjMatrix.resize(vertexes);
+        adjMatrix[0].resize(1);
         for (int i = 1; i < vertexes; i++) {
-            adjMatrix[i].resize(n);
-            for(int j = 1; j < vertexes; j++)
-                adjMatrix[i][j] = 0;
+            adjMatrix[i].resize(vertexes);
         }
     }
     MyGraph::MyGraph(const MyGraph& oldMatrix){
@@ -46,6 +45,8 @@
             }
         }
     }
+
+    //Adds an edge given vertexes a and b and its given weight
     bool MyGraph::AddEdge(int a, int b, float weight){
         if(a > MyGraph::vertexes || b > MyGraph::vertexes || weight < 0)
             return false;
