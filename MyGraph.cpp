@@ -29,19 +29,19 @@
 
     //Create a graph with n vertices.
     MyGraph::MyGraph(int n){
-        MyGraph::vertexes = n;
-        adjMatrix.resize(n);
-        for (int i = 0; i < vertexes; i++) {
+        MyGraph::vertexes = n + 1;
+        adjMatrix.resize(vertexes);
+        for (int i = 1; i < vertexes; i++) {
             adjMatrix[i].resize(n);
-            for(int j = 0; j < vertexes; j++)
+            for(int j = 1; j < vertexes; j++)
                 adjMatrix[i][j] = 0;
         }
     }
     MyGraph::MyGraph(const MyGraph& oldMatrix){
         MyGraph::vertexes = oldMatrix.MyGraph::vertexes;
         float newMatrix [MyGraph::vertexes][MyGraph::vertexes];
-        for(int row = 0; row < MyGraph::vertexes; row++){
-            for(int col = 0; col < MyGraph::vertexes; col++){
+        for(int row = 1; row < MyGraph::vertexes; row++){
+            for(int col = 1; col < MyGraph::vertexes; col++){
                 newMatrix[row][col] = oldMatrix.adjMatrix[row][col];
             }
         }
@@ -59,15 +59,15 @@
     }
     void MyGraph::Output(std::ostream& os){
         os << "Vertexes: " << MyGraph::vertexes << std::endl;
-        for(int row = 0; row < MyGraph::vertexes; row++){
-            for(int col = 0; col < MyGraph::vertexes; col++){
+        for(int row = 1; row < MyGraph::vertexes; row++){
+            for(int col = 1; col < MyGraph::vertexes; col++){
                 os << row << "-" << adjMatrix[row][col] << "-" << col << std::endl;
             }
         }
 
     }
 
-void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, vector<int> temp)
+    void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, vector<int> temp)
 {
     temp.push_back(start);
     if(start == t){
@@ -78,7 +78,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     }
     else{
         visited[start] = true;
-        for (int i = 0; i < vertexes; i++) {
+        for (int i = 1; i < vertexes; i++) {
             float num = adjMatrix[start][i];
             if (num != 0 && (!visited[i])) {
                 if(num > canCount)
@@ -94,7 +94,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         vector<bool> visited(vertexes);
         canMax = -1;
         candidate.empty();
-        for(int i = 0; i < vertexes; i++){
+        for(int i = 1; i < vertexes; i++){
             visited[i] = false;
         }
         vector<int> temp;
@@ -104,12 +104,12 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
     }
 
     std::pair<std::vector<int>, float> MyGraph::HW2Prog(int s, int t){
-        if(!pathFound)
+        if(!mstRan)
             getMST();
         pathFound = false;
         path.clear();
         vector<bool> visited(vertexes);
-        for(int i = 0; i < vertexes; i++){
+        for(int i = 1; i < vertexes; i++){
             visited[i] = false;
         }
         maxEdge = -1;
@@ -123,21 +123,23 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         vector<bool> visited(vertexes);
         sets.resize(vertexes);
         mst.resize(vertexes);
-        vector<int> setKey;
-        for(int i = 0; i < vertexes; i++){
+        mst[0].resize(1);
+        vector<int> setKey(vertexes);
+        for(int i = 1; i < vertexes; i++){
             visited[i] = false;
             mst[i].resize(vertexes);
             sets[i].push_back(i);
-            setKey.push_back(i);
+            setKey[i] = i;
         }
         quicksort(edgeList, 0, edgeList.size() - 1);
-        mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
+ /**       mst[edgeList[0].second.first][edgeList[0].second.second] = edgeList[0].first;
         mst[edgeList[0].second.second][edgeList[0].second.first] = edgeList[0].first;
         visited[edgeList[0].second.first] = true;
         visited[edgeList[0].second.second] = true;
-        sets[1].pop_back();
-        sets[0].push_back(edgeList[0].second.second);
-        for(int index = 1; index < edgeList.size(); index++){
+        sets[edgeList[0].second.second].pop_back();
+        sets[edgeList[0].second.first].push_back(edgeList[0].second.second);
+        setKey[edgeList[0].second.second] = edgeList[0].second.first;*/
+        for(int index = 0; index < edgeList.size(); index++){
             int a = edgeList[index].second.first;
             int b = edgeList[index].second.second;
             if(!visited[a] || !visited[b]){
@@ -186,7 +188,7 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
         }
         vector<int> newpath;
         visited[start] = true;
-        for(int i = 0; i < vertexes; i++){
+        for(int i = 1; i < vertexes; i++){
             if(pathFound)
                 return;
             if(!visited[i] && mst[start][i] != 0){
@@ -203,7 +205,6 @@ void MyGraph::dfs(int start, vector<bool> visited, const int t, float canCount, 
 
 
 int MyGraph::Partition(vector<pair<float, pair<int, int>>> &v, int start, int end){
-
     int pivot = end;
     int j = start;
     for(int i=start;i<end;++i){
